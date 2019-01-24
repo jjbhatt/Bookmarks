@@ -1,0 +1,35 @@
+<div class="table table-bordered col-6" style="margin-top:10px">
+    Add Category
+</div>
+
+<form #CategoryForm="ngForm">
+    <table class="table table-bordered col-6">
+        <tr>
+            <td>
+                Category Name
+            </td>
+            <td>
+                <input required placeholder="Category" type="text" name="Category" id="Category" [(ngModel)]="Category" #CategoryName="ngModel" />
+            </td>
+        </tr>
+        <tr *ngIf="CategoryName.invalid && CategoryName.touched">
+            <td colspan="2" class="has-error">Enter Valid Name..</td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="button" class="btn btn-success" value="Add Category" [disabled]="CategoryForm.invalid" (click)="AddNewCategory(CategoryForm.value)" />
+                <!-- You can also use the submit button and in form tag - (submit)="AddEmployee()" -->
+            </td>
+            <td>
+                <input type="button" class="btn btn-default" value="Reset" (click)="CategoryForm.reset()" />
+            </td>
+        </tr>
+    </table>
+</form>
+<div>
+    <a style="cursor:pointer;color:cornflowerblue" routerLink="/bookmarklist">Back</a>
+</div>
+
+{{CategoryForm.valid}}
+{{CategoryName.valid}}

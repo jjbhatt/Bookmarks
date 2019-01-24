@@ -1,0 +1,157 @@
+<!--<nav class="nav navbar">
+    <ul class="nav">
+        <li>
+            <a style="cursor:pointer;color:cornflowerblue" (click)="AddNewBookmarkItem()">Add New Bookmark Item</a> |
+            <a style="cursor:pointer;color:cornflowerblue" routerLink="/bookmarkcategories">Add New Category</a>
+        </li>
+    </ul>
+</nav>-->
+<!-- DATA TABLE-->
+<section class="p-t-20">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="title-5 m-b-35">Bookmarks List</h3>
+                <div class="table-data__tool">
+                    <div class="table-data__tool-left">
+                        <div class="rs-select2--light rs-select2--md">
+                            <!--<select class="js-select2" name="property">
+                                <option selected="selected">All Properties</option>
+                                <option value="">Option 1</option>
+                                <option value="">Option 2</option>
+                            </select>-->
+                            <select class="" id="filterby" name="filterby" [(ngModel)]="ddlFilterSelectedValue" (change)="filterBySelected($event.target.value)">
+                                <option selected="selected" disabled>-- Filter By --</option>
+                                <option *ngFor="let filter of ddlfilterby" value={{filter.value}}>{{filter.name}}</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                        <div *ngIf="ddlFilterSelectedValue=='Name'" class="rs-select2--light rs-select2--sm">
+                            <input class="block-email" type="text" placeholder="Enter Bookmark Name" (input)="FilterByBookmarkName($event.target.value)" />
+                        </div>
+                        <div *ngIf="ddlFilterSelectedValue=='Category'" class="rs-select2--light rs-select2--sm">
+                            <!--<select class="js-select2" name="time">
+                                <option selected="selected">Today</option>
+                                <option value="">3 Days</option>
+                                <option value="">1 Week</option>
+                            </select>-->
+                            <select class="block-email" name="Categories" id="Categories" (change)="FilterByCategoryName($event.target.value)">
+                                <option disabled>-- Select Category --</option>
+                                <option *ngFor="let category of categoriylist" value={{category.CategoryId}}>{{category.Category}}</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                        <!--<button class="au-btn-filter">
+                            <i class="zmdi zmdi-filter-list"></i>filters
+                        </button>-->
+                    </div>
+                    <div class="table-data__tool-right">
+                        <!--<button class="au-btn au-btn-icon au-btn--green au-btn--small">
+                            <i class="zmdi zmdi-plus"></i>add item
+                        </button>-->
+                        <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
+                            <!--<select  class="js-select2" name="type" >
+                                <option disabled selected="selected">Export</option>
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel</option>
+                                <option value="doc">Doc</option>
+                            </select>-->
+                            <input class="js-select2" name="btnExport" type="button" value="Export" (click)="exportAsXLSX()" />
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="IsBookmarkItemDeleted" class="btn-success">
+                    Bookmark Item Deleted
+                </div>
+                <div class="table-responsive table-responsive-data2">
+                    <table class="table table-data2 table-hover">
+                        <thead>
+                            <tr>
+                                <!--<th>
+                                    <label class="au-checkbox">
+                                        <input type="checkbox">
+                                        <span class="au-checkmark"></span>
+                                    </label>
+                                </th>-->
+                                <th>Bookmark Id</th>
+                                <th>Bookmark Name</th>
+                                <th>Category</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="bookmarkItems">
+                            <tr class="tr-shadow" *ngFor="let bookmarkitem of bookmarkItems | paginate: { itemsPerPage: 20, currentPage: p }">
+                                <!--<td>
+                                    <label class="au-checkbox">
+                                        <input type="checkbox">
+                                        <span class="au-checkmark"></span>
+                                    </label>
+                                </td>-->
+                                <td>{{bookmarkitem.ListId}}</td>
+                                <td>
+                                    <span class="block-email"><a href={{bookmarkitem.Link}} target="_blank">{{bookmarkitem.ListName}}</a></span>
+                                </td>
+                                <td class="desc"><!--{{bookmarkitem.CategoryId}} ---> {{bookmarkitem.BookmarksCategory.Category}}</td>
+                                <td>
+                                    <div class="table-data-feature">
+                                        <!--<button class="item" data-toggle="tooltip" data-placement="top" title="Send">
+                                            <i class="zmdi zmdi-mail-send"></i>
+                                        </button>-->
+                                        <button class="item" data-toggle="tooltip" (click)="updateBookmarkItem(bookmarkitem.ListId)" data-placement="top" title="Edit">
+                                            <i class="zmdi zmdi-edit"></i>
+                                        </button>
+                                        <button class="item" data-toggle="tooltip" (click)="removeBookmarkItem(bookmarkitem.ListId)" data-placement="top" title="Delete">
+                                            <i class="zmdi zmdi-delete"></i>
+                                        </button>
+                                        <!--<button class="item" data-toggle="tooltip" data-placement="top" title="More">
+                                            <i class="zmdi zmdi-more"></i>
+                                        </button>-->
+                                    </div>
+                                </td>
+                            </tr>
+                            <!--<tr class="spacer"></tr>-->
+                        </tbody>
+                        <tbody *ngIf="!bookmarkItems">
+                            Loading...
+                        </tbody>
+                    </table>
+                    <div>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </div>
+                </div>
+               
+                <!-- After clicking the button open the modal dialog using open/close event binding methods -->
+                <div class="backdrop" [ngStyle]="{'display':display}"></div>
+
+                <!-- modal -->
+                <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+                    <!-- modal-dialog -->
+                    <div class="modal-dialog" role="document">
+                        <!-- modal-content -->
+                        <div class="modal-content">
+                            <!-- modal-header -->
+                            <div class="modal-header">
+                                <button type="button" class="close" aria-label="Close" (click)="closeModalDialog()"><span aria-hidden="true">&times;</span></button>
+                                <!-- <h4 class="modal-title">Login</h4> -->
+                            </div>
+
+                            <!-- modal-body -->
+                            <div class="modal-body">
+                                Are you sure you want to delete this record?
+                            </div>
+
+                            <!-- modal-footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" (click)="DeleteBookmarkItem('Yes')">Yes</button>  <button type="button" class="btn btn-default" (click)="DeleteBookmarkItem('No')">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END DATA TABLE-->
+<!--<hr />-->
+

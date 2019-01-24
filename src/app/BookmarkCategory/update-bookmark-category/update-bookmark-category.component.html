@@ -1,0 +1,36 @@
+<div class="table table-bordered col-6" style="margin-top:10px">
+    Update Category
+</div>
+
+<div class="table-responsive table-responsive-data2">
+    <form #CategoryForm="ngForm">
+        <table class="table table-data2 table-hover">
+            <tr class="tr-shadow">
+                <td>
+                    Category Name
+                </td>
+                <td>
+                    <input class="block-email" required placeholder="Category" type="text" name="Category" id="Category" [(ngModel)]="Category" #CategoryName="ngModel" />
+                </td>
+            </tr>
+            <tr *ngIf="CategoryName.invalid && CategoryName.touched">
+                <td colspan="2" class="has-error">Enter Valid Name..</td>
+            </tr>
+            <tr class="tr-shadow">
+                <td>
+                    <input type="button" class="btn btn-success" value="Update Category" [disabled]="CategoryForm.invalid" (click)="UpdateCategory(CategoryForm.value)" />
+                </td>
+                <td>
+                    <input type="button" class="btn btn-default" value="Reset" (click)="CategoryForm.reset()" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
+    <a style="cursor:pointer;color:cornflowerblue" routerLink="/bookmarklist">Back</a>
+</div>
+
+{{CategoryForm.valid}}
+{{CategoryName.valid}}
+

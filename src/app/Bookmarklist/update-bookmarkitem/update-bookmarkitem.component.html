@@ -1,0 +1,66 @@
+<div class="table table-bordered col-6" style="margin-top:10px">
+    Update Bookmark Item
+</div>
+
+<div class="table-responsive table-responsive-data2">
+    <form #BookmarkListForm="ngForm" (ngSubmit)="UpdateBookmarkItem($event)">
+        <table class="table table-data2">
+            <tr class="tr-shadow">
+                <td>
+                    Bookmark Name
+                </td>
+                <td>
+                    <input class="block-email" required placeholder="BookmarkName" type="text" name="bookmarkname" id="bookmarkname" [(ngModel)]="bookmarkname" #BookmarkName="ngModel" />
+                </td>
+            </tr>
+            <!--<tr *ngIf="BookmarkName.invalid && BookmarkName.touched">
+            <td colspan="2" class="has-error">Enter Valid Name..</td>
+        </tr>-->
+            <tr class="tr-shadow">
+                <td>
+                    Bookmark Link
+                </td>
+                <td>
+                    <input class="block-email" required placeholder="Bookmark Link" type="text" name="bookmarklink" id="bookmarklink" [(ngModel)]="bookmarklink" #BookmarkLink="ngModel" />
+                </td>
+            </tr>
+            <!--<tr *ngIf="BookmarkLink.invalid && BookmarkLink.touched">
+            <td colspan="2" class="has-error">Enter Valid Name..</td>
+        </tr>-->
+            <tr class="tr-shadow">
+                <td >
+                    Select Category
+                </td>
+                <td >
+                    <select class="block-email" name="Categories" id="Categories">
+                        <option disabled>-- Select Category --</option>
+                        <option *ngFor="let category of BookmarkCategories" value={{category.CategoryId}} [selected]="category.CategoryId == BookmarkItem.CategoryId">{{category.Category}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="tr-shadow">
+                <td>
+                    IsActive
+                </td>
+                <td>
+                    <input class="block-email" type="checkbox" name="IsActive" id="IsActive" [(ngModel)]="IsActive" #BookmarkIsActive="ngModel" />
+                </td>
+            </tr>
+            <tr class="tr-shadow">
+                <td>
+                    <input type="submit" class="btn btn-success" value="Update Bookmark Item" [disabled]="BookmarkListForm.invalid" />
+                    <!-- You can also use the submit button and in form tag - (submit)="AddEmployee()" -->
+                </td>
+                <td>
+                    <input type="button" class="btn btn-default" value="Reset" (click)="BookmarkListForm.reset()" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
+    <a style="cursor:pointer;color:cornflowerblue" routerLink="/bookmarklist">Back</a>
+</div>
+
+{{BookmarkListForm.valid}}
+{{BookmarkListForm.valid}}
